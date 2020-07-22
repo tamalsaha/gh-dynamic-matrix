@@ -32,9 +32,9 @@ jobs:
 
           echo "k8s:" ${k8s[@]}
           echo "db:" ${db[@]}
-          jo -p include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]}))
+          matrix=$(jo include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]})))
 
-          echo "::set-output name=matrix::$(jo include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]})))"
+          echo "::set-output name=matrix::$matrix"
 
   build:
     needs: job1
