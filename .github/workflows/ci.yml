@@ -11,22 +11,28 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - id: set-matrix
+      - id: prepare host
         run: |
-          str="${{ github.event.comment.body }}"
-
-          IFS=' ' # space is set as delimiter
-          read -ra M <<< "$str" # str is read into an array as tokens separated by IFS
-          for i in "${M[@]}"; do # access each element of array
-              echo "$i"
-          done
-          k8s=${M[1]}
-          db=${M[2]}
-          echo "k8s: " $k8s
-          echo "db: " $db
-
           # https://github.com/jpmens/jo
           sudo apt-get install jo
+
+      - id: set-matrix
+        run: |
+          k8s=(v1.12.10, v1.14.10, v1.16.9, v1.18.4)
+          db=(7.3.2, 7.2.0, 6.8.0, 6.5.3, 6.4.0, 6.3.0-v1, 6.2.4-v1, 5.6.4-v1)
+
+          IFS=' '
+          read -ra M <<< "${{ github.event.comment.body }}"
+          if [ ! -z ${M[1]} ]; then
+            k8s=(${M[1]})
+          fi
+          if [ ! -z ${M[2]} ]; then
+            db=(${M[2]})
+          fi
+
+          echo "k8s:" ${k8s[@]}
+          echo "db:" ${db[@]}
+          jo -p include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]}))
 
           echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
 
