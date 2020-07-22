@@ -12,7 +12,22 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - id: set-matrix
-        run: echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
+        run: |
+          str=${{ github.event.comment.body }}
+
+          IFS=' ' # space is set as delimiter
+          read -ra ADDR <<< "$str" # str is read into an array as tokens separated by IFS
+          for i in "${ADDR[@]}"; do # access each element of array
+              echo "$i"
+          done
+          k8s=${ADDR[1]}
+          db=${ADDR[2]}
+          echo "k8s: " $k8s
+          echo "db: " $db
+
+          sudo apt-get install jo
+
+          echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
 
   build:
     needs: job1
