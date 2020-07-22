@@ -5,4 +5,4 @@ db=(7.3.2, 7.2.0, 6.8.0, 6.5.3, 6.4.0, 6.3.0-v1, 6.2.4-v1, 5.6.4-v1)
 
 # jo -p k8s=$(jo -p -a ${k8s[@]}) db=$(jo -p -a ${db[@]})
 
-jo -p include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]}))
+jo include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]}))

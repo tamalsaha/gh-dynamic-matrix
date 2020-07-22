@@ -34,7 +34,7 @@ jobs:
           echo "db:" ${db[@]}
           jo -p include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]}))
 
-          echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
+          echo "::set-output name=matrix::$(jo include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]})))"
 
   build:
     needs: job1
