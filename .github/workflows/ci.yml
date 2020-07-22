@@ -25,6 +25,7 @@ jobs:
           echo "k8s: " $k8s
           echo "db: " $db
 
+          # https://github.com/jpmens/jo
           sudo apt-get install jo
 
           echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
