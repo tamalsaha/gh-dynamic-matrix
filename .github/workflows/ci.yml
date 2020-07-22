@@ -13,7 +13,7 @@ jobs:
     steps:
       - id: set-matrix
         run: |
-          str=${{ github.event.comment.body }}
+          str="${{ github.event.comment.body }}"
 
           IFS=' ' # space is set as delimiter
           read -ra M <<< "$str" # str is read into an array as tokens separated by IFS
