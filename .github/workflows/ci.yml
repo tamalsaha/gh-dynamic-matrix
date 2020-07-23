@@ -47,7 +47,7 @@ jobs:
 
           # echo "::set-output name=works::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
 
-      - id: test
+      - name: test
         run: |
           echo '${{ steps.set-matrix.outputs.matrix }}'
           echo "_____________________________________________________"
