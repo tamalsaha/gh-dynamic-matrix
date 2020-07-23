@@ -30,12 +30,31 @@ jobs:
             db=(${M[2]})
           fi
 
-          echo "k8s:" ${k8s[@]}
-          echo "db:" ${db[@]}
-          matrix=$(jo include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]})) | sed -r 's/"/\\"/g')
+          function join { local IFS="$1"; shift; echo "$*"; }
+          matrix=()
+          for x in ${k8s[@]}; do
+              for y in ${db[@]}; do
+                  matrix+=( $(jo k8s=$x db=$y) )
+              done
+          done
+          data=$((join , ${matrix[@]}) | sed -r 's/"/\\"/g')
+
+          # function join { local IFS="$1"; shift; echo "$*"; }
+
+          # out=()
+          # for x in ${k8s[@]}; do
+          #     for y in ${db[@]}; do
+          #         out+=( $(jo k8s=$x db=$y) )
+          #     done
+          # done
+          # join , ${out[@]}
+
+          # echo "k8s:" ${k8s[@]}
+          # echo "db:" ${db[@]}
+          # matrix=$(jo include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]})) | sed -r 's/"/\\"/g')
 
           echo "::set-output name=matrix::$matrix"
-          echo "::set-output name=matrix::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
+          echo "::set-output name=matrix::{\"include\":[$data]}"
 
       # - id: test
       #   run: |

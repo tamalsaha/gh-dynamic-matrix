@@ -1,7 +1,7 @@
 #!/bin/bash
 
-k8s=(v1.12.10, v1.14.10, v1.16.9, v1.18.4)
-db=(7.3.2, 7.2.0, 6.8.0, 6.5.3, 6.4.0, 6.3.0-v1, 6.2.4-v1, 5.6.4-v1)
+k8s=(v1.12.10 v1.14.10 v1.16.9 v1.18.4)
+db=(7.3.2 7.2.0 6.8.0 6.5.3 6.4.0 6.3.0-v1 6.2.4-v1 5.6.4-v1)
 
 # jo -p k8s=$(jo -p -a ${k8s[@]}) db=$(jo -p -a ${db[@]})
 
@@ -12,9 +12,9 @@ db=(7.3.2, 7.2.0, 6.8.0, 6.5.3, 6.4.0, 6.3.0-v1, 6.2.4-v1, 5.6.4-v1)
 # xyz=$(jo include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]})) | tr " \")
 # echo $xyz
 
-jo include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]})) | sed -r 's/"/\\"/g'
+# jo include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]})) | sed -r 's/"/\\"/g'
 
-jo include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]})) | yq r --prettyPrint -
+# jo include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]})) | yq r --prettyPrint -
 
 # # echo -n "$TEST_CREDENTIALS" > hack/config/.env
 # # echo >> hack/config/.env
@@ -23,4 +23,12 @@ jo include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]})) | yq r --prettyPrin
 
 # echo "xyz=$(echo $xyz)" >> .env
 
-data=((k8s "1.0") ())
+function join { local IFS="$1"; shift; echo "$*"; }
+
+matrix=()
+for x in ${k8s[@]}; do
+    for y in ${db[@]}; do
+        matrix+=( $(jo k8s=$x db=$y) )
+    done
+done
+(join , ${matrix[@]}) | sed -r 's/"/\\"/g'
