@@ -5,7 +5,7 @@ on:
     types: [created]
 
 jobs:
-  job1:
+  config:
     if: contains(github.event.issue.html_url, '/pull/') && startsWith(github.event.comment.body, '/ok-to-test')
     runs-on: ubuntu-latest
     outputs:
@@ -52,10 +52,10 @@ jobs:
           echo "_____________________________________________________"
 
   build:
-    needs: job1
+    needs: config
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{fromJson(needs.job1.outputs.matrix)}}
+      matrix: ${{fromJson(needs.config.outputs.matrix)}}
     steps:
       - uses: actions/checkout@v2
 
