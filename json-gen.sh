@@ -22,3 +22,5 @@ jo include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]})) | yq r --prettyPrin
 
 
 # echo "xyz=$(echo $xyz)" >> .env
+
+data=((k8s "1.0") ())
