@@ -23,6 +23,7 @@ db=(7.3.2 7.2.0 6.8.0 6.5.3 6.4.0 6.3.0-v1 6.2.4-v1 5.6.4-v1)
 
 # echo "xyz=$(echo $xyz)" >> .env
 
+# https://zaiste.net/posts/how-to-join-elements-of-array-bash/
 function join { local IFS="$1"; shift; echo "$*"; }
 
 matrix=()
@@ -49,5 +50,11 @@ done
 # echo "db:" ${db[@]}
 # matrix=$(jo include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]})) | sed -r 's/"/\\"/g')
 
-matrix=$(echo "{\"include\":[$(join , ${matrix[@]})]}" | sed -r 's/"/\\"/g')
+
+# matrix=$(echo "{\"include\":[$(join , ${matrix[@]})]}" | sed -r 's/"/\\"/g')
+
+# IFS=","
+# matrix=$(echo "{"include":[$(echo "${matrix[@]}")]}")
+
+matrix=$(echo "{\"include\":[$(join , ${matrix[@]})]}")
 echo $matrix
