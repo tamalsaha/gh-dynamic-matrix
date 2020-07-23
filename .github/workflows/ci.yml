@@ -40,10 +40,12 @@ jobs:
           matrix=$(echo "{\"include\":[$(join , ${matrix[@]})]}" | sed -r 's/"/\\"/g')
           echo $matrix
           echo "::set-output name=matrix::$matrix"
+          echo "::set-output name=works::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
 
-      # - id: test
-      #   run: |
-      #     echo ${{fromJson(steps.set-matrix.outputs.matrix)}}
+      - id: test
+        run: |
+          echo ${{ steps.set-matrix.outputs.works }}
+          echo ${{ fromJson(steps.set-matrix.outputs.works) }}
 
   build:
     needs: job1
