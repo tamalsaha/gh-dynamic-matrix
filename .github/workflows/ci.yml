@@ -37,25 +37,9 @@ jobs:
                   matrix+=( $(jo k8s=$x db=$y) )
               done
           done
-          data=$((join , ${matrix[@]}) | sed -r 's/"/\\"/g')
-
-          # function join { local IFS="$1"; shift; echo "$*"; }
-
-          # out=()
-          # for x in ${k8s[@]}; do
-          #     for y in ${db[@]}; do
-          #         out+=( $(jo k8s=$x db=$y) )
-          #     done
-          # done
-          # join , ${out[@]}
-
-          # echo "k8s:" ${k8s[@]}
-          # echo "db:" ${db[@]}
-          # matrix=$(jo include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]})) | sed -r 's/"/\\"/g')
-
-          xy="{\"include\":[$data]}"
-          echo $xy
-          echo "::set-output name=matrix::$xy"
+          matrix=$(echo "{\"include\":[$(join , ${matrix[@]})]}" | sed -r 's/"/\\"/g')
+          echo $matrix
+          echo "::set-output name=matrix::$matrix"
 
       - id: test
         run: |

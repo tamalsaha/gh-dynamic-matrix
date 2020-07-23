@@ -31,4 +31,23 @@ for x in ${k8s[@]}; do
         matrix+=( $(jo k8s=$x db=$y) )
     done
 done
-(join , ${matrix[@]}) | sed -r 's/"/\\"/g'
+# (join , ${matrix[@]}) | sed -r 's/"/\\"/g'
+
+# data=$((join , ${matrix[@]}) | sed -r 's/"/\\"/g')
+
+# function join { local IFS="$1"; shift; echo "$*"; }
+
+# out=()
+# for x in ${k8s[@]}; do
+#     for y in ${db[@]}; do
+#         out+=( $(jo k8s=$x db=$y) )
+#     done
+# done
+# join , ${out[@]}
+
+# echo "k8s:" ${k8s[@]}
+# echo "db:" ${db[@]}
+# matrix=$(jo include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]})) | sed -r 's/"/\\"/g')
+
+matrix=$(echo "{\"include\":[$(join , ${matrix[@]})]}" | sed -r 's/"/\\"/g')
+echo $matrix
