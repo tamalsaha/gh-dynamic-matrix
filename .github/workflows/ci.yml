@@ -60,7 +60,7 @@ jobs:
         run: |
           echo ${{ steps.set-matrix.outputs.matrix }}
           echo "------------------------"
-          echo ${{fromJson(steps.set-matrix.outputs.matrix)}}
+          # echo ${{fromJson(steps.set-matrix.outputs.matrix)}}
 
   build:
     needs: job1
