@@ -37,7 +37,7 @@ jobs:
                   matrix+=( $(jo k8s=$x db=$y) )
               done
           done
-          matrix=$(echo "{\"include\":[$(join , ${matrix[@]})]}" | sed -r 's/"/\\"/g')
+          matrix=$(echo "{"include":[$(join , ${matrix[@]})]}")
           echo $matrix
           echo "::set-output name=matrix::$matrix"
           echo "::set-output name=works::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
