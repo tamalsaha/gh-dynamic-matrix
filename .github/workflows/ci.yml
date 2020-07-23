@@ -45,7 +45,11 @@ jobs:
       - id: test
         run: |
           echo '${{ steps.set-matrix.outputs.works }}'
+          echo "_____________________________________________________"
           echo '${{ fromJson(steps.set-matrix.outputs.works) }}'
+          echo "-----------------------------------------------------"
+          echo '${{ steps.set-matrix.outputs.matrix }}'
+          echo "_____________________________________________________"
 
   build:
     needs: job1
