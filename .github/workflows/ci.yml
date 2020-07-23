@@ -23,7 +23,7 @@ jobs:
 
           IFS=' '
           read -ra M <<< "${{ github.event.comment.body }}"
-          if [ ! -z ${M[1]} ]; then
+          if [ ! -z ${M[1]} ] && [ ${M[1]} != "*" ]; then
             k8s=(${M[1]})
           fi
           if [ ! -z ${M[2]} ]; then
