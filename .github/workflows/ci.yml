@@ -22,25 +22,29 @@ jobs:
           db=(7.3.2 7.2.0 6.8.0 6.5.3 6.4.0 6.3.0-v1 6.2.4-v1 5.6.4-v1)
 
           IFS=' '
-          read -ra M <<< "${{ github.event.comment.body }}"
-          if [ ! -z ${M[1]} ] && [ ${M[1]} != "*" ]; then
-            k8s=(${M[1]})
+          read -ra COMMENT <<< "${{ github.event.comment.body }}"
+          if [ ! -z ${COMMENT[1]} ] && [ ${COMMENT[1]} != "*" ]; then
+            k8s=(${COMMENT[1]})
           fi
-          if [ ! -z ${M[2]} ]; then
-            db=(${M[2]})
+          if [ ! -z ${COMMENT[2]} ]; then
+            db=(${COMMENT[2]})
           fi
 
-          function join { local IFS="$1"; shift; echo "$*"; }
           matrix=()
           for x in ${k8s[@]}; do
               for y in ${db[@]}; do
                   matrix+=( $(jo k8s=$x db=$y) )
               done
           done
+
+          # https://zaiste.net/posts/how-to-join-elements-of-array-bash/
+          function join { local IFS="$1"; shift; echo "$*"; }
           matrix=$(echo "{"include":[$(join , ${matrix[@]})]}")
           echo $matrix
           echo "::set-output name=matrix::$matrix"
-          echo "::set-output name=works::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
+
+
+          # echo "::set-output name=works::{\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}"
 
       - id: test
         run: |
