@@ -53,7 +53,9 @@ jobs:
           # echo "db:" ${db[@]}
           # matrix=$(jo include=$(jo k8s=$(jo -a ${k8s[@]}) db=$(jo -a ${db[@]})) | sed -r 's/"/\\"/g')
 
-          echo "::set-output name=matrix::{\"include\":[$data]}"
+          xy="{\"include\":[$data]}"
+          echo $xy
+          echo "::set-output name=matrix::$xy"
 
       - id: test
         run: |
