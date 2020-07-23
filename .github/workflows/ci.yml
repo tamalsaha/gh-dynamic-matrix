@@ -18,8 +18,8 @@ jobs:
 
       - id: set-matrix
         run: |
-          k8s=(v1.12.10, v1.14.10, v1.16.9, v1.18.4)
-          db=(7.3.2, 7.2.0, 6.8.0, 6.5.3, 6.4.0, 6.3.0-v1, 6.2.4-v1, 5.6.4-v1)
+          k8s=(v1.12.10 v1.14.10 v1.16.9 v1.18.4)
+          db=(7.3.2 7.2.0 6.8.0 6.5.3 6.4.0 6.3.0-v1 6.2.4-v1 5.6.4-v1)
 
           IFS=' '
           read -ra M <<< "${{ github.event.comment.body }}"
@@ -56,11 +56,11 @@ jobs:
           echo "::set-output name=matrix::$matrix"
           echo "::set-output name=matrix::{\"include\":[$data]}"
 
-      # - id: test
-      #   run: |
-      #     echo ${{ steps.set-matrix.outputs.matrix }}
-      #     echo "------------------------"
-      #     echo ${{fromJson(steps.set-matrix.outputs.matrix)}}
+      - id: test
+        run: |
+          echo ${{ steps.set-matrix.outputs.matrix }}
+          echo "------------------------"
+          echo ${{fromJson(steps.set-matrix.outputs.matrix)}}
 
   build:
     needs: job1
