@@ -41,9 +41,9 @@ jobs:
           echo $matrix
           echo "::set-output name=matrix::$matrix"
 
-      - id: test
-        run: |
-          echo ${{fromJson(steps.set-matrix.outputs.matrix)}}
+      # - id: test
+      #   run: |
+      #     echo ${{fromJson(steps.set-matrix.outputs.matrix)}}
 
   build:
     needs: job1
