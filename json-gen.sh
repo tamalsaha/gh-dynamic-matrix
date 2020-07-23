@@ -29,9 +29,22 @@ function join { local IFS="$1"; shift; echo "$*"; }
 matrix=()
 for x in ${k8s[@]}; do
     for y in ${db[@]}; do
-        matrix+=( $(jo k8s=$x db=$y) )
+        echo $( jq -n -c --arg x "$x" --arg y "$y" '{"k8s":$x,"db":$y}' )
+        matrix+=( $( jq -n -c --arg x "$x" --arg y "$y" '{"k8s":$x,"db":$y}' ) )
+        # matrix+=( $(jo k8s=$x db=$y) )
     done
 done
+
+
+
+
+
+
+
+
+
+
+
 # (join , ${matrix[@]}) | sed -r 's/"/\\"/g'
 
 # data=$((join , ${matrix[@]}) | sed -r 's/"/\\"/g')
@@ -58,3 +71,16 @@ done
 
 matrix=$(echo "{\"include\":[$(join , ${matrix[@]})]}")
 echo $matrix
+
+
+BUCKET_NAME=9.3
+OBJECT_NAME=testworkflow-2.0.1.jar
+TARGET_LOCATION=/opt/test/testworkflow-2.0.1.jar
+
+JSON_STRING=$( jq -n \
+                  --arg bn "$BUCKET_NAME" \
+                  --arg on "$OBJECT_NAME" \
+                  --arg tl "$TARGET_LOCATION" \
+                  '{bucketname: $bn, objectname: $on, targetlocation: $tl}' )
+
+echo $JSON_STRING

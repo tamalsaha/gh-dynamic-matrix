@@ -11,12 +11,11 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - name: Prepare host
-        run: |
-          # https://github.com/jpmens/jo
-          sudo apt-get install jo
-          jo -v
-
+      # - name: Prepare host
+      #   run: |
+      #     # https://github.com/jpmens/jo
+      #     sudo apt-get install jo
+      #     jo -v
       - id: set-matrix
         name: Generate test matrix
         run: |
@@ -35,7 +34,8 @@ jobs:
           matrix=()
           for x in ${k8s[@]}; do
               for y in ${db[@]}; do
-                  matrix+=( $(jo k8s=$x db=$y) )
+                  # matrix+=( $(jo k8s=$x db=$y) )
+                  matrix+=( $( jq -n -c --arg x "$x" --arg y "$y" '{"k8s":$x,"db":$y}' ) )
               done
           done
 
