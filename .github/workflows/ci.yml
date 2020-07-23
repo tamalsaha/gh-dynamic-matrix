@@ -66,12 +66,7 @@ jobs:
     needs: job1
     runs-on: ubuntu-latest
     strategy:
-      matrix: # ${{fromJson(needs.job1.outputs.matrix)}}
-        include:
-          - k8s: v1.12.10
-            db: 7.3.2
-          - k8s: v1.14.10
-            db: 6.5.3
+      matrix: ${{fromJson(needs.job1.outputs.matrix)}}
     steps:
       - uses: actions/checkout@v2
 
