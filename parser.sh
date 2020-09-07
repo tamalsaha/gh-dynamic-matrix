@@ -11,12 +11,12 @@ k8s=(v1.12.10 v1.14.10 v1.16.9 v1.18.4)
 db=(4.1.13-v1 4.1.7-v3 4.1.4-v1 4.0.11-v1 4.0.5-v3 4.0.3-v1 3.6.13-v1 3.6.8-v1 3.4.22-v1 3.4.17-v1)
 
 IFS=' '
-read -ra COMMENT <<< "/ok-to-test refs/mg v1.18.4 7.3.2"
+read -ra COMMENT <<< "/ok-to-test refs/mg"
 
 start=0
-ref_prefix=refs/
-if [[ ${COMMENT[1]} == ${ref_prefix}* ]]; then
-  echo "::set-output name=e2e_ref::${COMMENT[1]#$ref_prefix}"
+prefix=refs/
+if [[ ${COMMENT[1]} == ${prefix}* ]]; then
+  echo "::set-output name=e2e_ref::${COMMENT[1]#$prefix}"
   start=1
 else
   echo "::set-output name=e2e_ref::master"
