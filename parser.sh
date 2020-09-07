@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -eou pipefail
-
 # /ok-to-test [refs/master]
 # /ok-to-test [refs/master] v1.18.4 7.3.2
 # /ok-to-test [refs/master] v1.18.4
@@ -11,7 +9,7 @@ k8s=(v1.12.10 v1.14.10 v1.16.9 v1.18.4)
 db=(4.1.13-v1 4.1.7-v3 4.1.4-v1 4.0.11-v1 4.0.5-v3 4.0.3-v1 3.6.13-v1 3.6.8-v1 3.4.22-v1 3.4.17-v1)
 
 IFS=' '
-read -ra COMMENT <<< "/ok-to-test refs/mg"
+read -ra COMMENT <<< "/ok-to-test"
 
 start=0
 prefix=refs/
